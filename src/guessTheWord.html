@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Guess the Word</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        #word {
+            display: flex;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        #word span {
+            margin-right: 10px;
+            color: #333;
+            text-decoration: underline;
+        }
+
+        #guesses {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #guesses span {
+            font-size: 24px;
+            color: #333;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+<h1>Guess the Word</h1>
+<p>Guess the word by typing one letter at a time. You have 10 guesses!</p>
+
+<div id="word"></div>
+<div id="guesses"></div>
+
+<script>
+    const secretWord = "welcome";
+    let guesses = [];
+
+    const wordDiv = document.getElementById("word");
+    for (let i = 0; i < secretWord.length; i++) {
+        wordDiv.innerHTML += "<span>_</span>";
+    }
+
+    const guessesDiv = document.getElementById("guesses");
+    document.addEventListener("keydown", (event) => {
+        const letter = event.key.toLowerCase();
+        if (letter.match(/[a-z]/) && !guesses.includes(letter)) {
+            guesses.push(letter);
+            const wordSpanList = wordDiv.getElementsByTagName("span");
+            let correctGuess = false;
+            for (let i = 0; i < secretWord.length; i++) {
+                if (secretWord[i] === letter) {
+                    wordSpanList[i].innerHTML = letter;
+                    correctGuess = true;
+                }
+            }
+            if (!correctGuess) {
+                guessesDiv.innerHTML += "<span>" + letter + "</span>";
+            }
+        }
+        if (guesses.length >= 10) {
+            alert("Game over! The secret word was " + secretWord);
+            window.location.reload();
+        }
+        if (wordDiv.innerText === secretWord) {
+            alert("Congratulations, you guessed the word!");
+            window.location.reload();
+        }
+    });
+</script>
+</body>
+</html>
